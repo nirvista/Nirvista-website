@@ -42,6 +42,7 @@ const Signup = () => {
         const candidate = (queryReferral || pathReferral || "").trim();
         if (!candidate) {
             setIsReferralLocked(false);
+            setFormData(prev => ({ ...prev, referralCode: '' }));
             return;
         }
 
