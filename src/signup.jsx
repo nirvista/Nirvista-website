@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const inputBase =
     'w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-200';
@@ -64,7 +65,12 @@ const Signup = () => {
         // ⭐ If referral is locked from URL, don't allow typing
         if (name === "referralCode" && isReferralLocked) return;
 
-        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+        const normalizedValue =
+            name === 'contactNumber'
+                ? value.replace(/\D/g, '').slice(0, 10)
+                : value;
+
+        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : normalizedValue }));
     };
 
     const handleSubmit = async (e) => {
@@ -90,7 +96,7 @@ const Signup = () => {
             console.log("API Response:", data);
 
             if (data.userId) {
-                alert("OTP sent to your mobile number!");
+                toast.success(`OTP sent to +91 ${formData.contactNumber}`);
                 const pending = {
                     mobile: formData.contactNumber,
                     userId: data.userId
@@ -98,11 +104,11 @@ const Signup = () => {
                 localStorage.setItem("pendingSignup", JSON.stringify(pending));
                 navigate("/otp", { state: pending });
             } else {
-                alert("Error sending OTP: " + (data.message || "Unknown error"));
+                toast.error("Error sending OTP: " + (data.message || "Unknown error"));
             }
         } catch (err) {
             console.error("Signup API error:", err);
-            alert("Something went wrong");
+            toast.error("Something went wrong while sending OTP.");
         } finally {
             setIsSubmitting(false);
         }
@@ -147,15 +153,25 @@ const Signup = () => {
                     {/* Contact Number */}
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700">Contact Number</label>
-                        <input
-                            type="tel"
-                            name="contactNumber"
-                            placeholder="+91"
-                            value={formData.contactNumber}
-                            onChange={handleChange}
-                            className={inputBase}
-                            required
-                        />
+                        <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-500 pointer-events-none">
+                                +91
+                            </span>
+                            <input
+                                type="tel"
+                                name="contactNumber"
+                                placeholder="8888888888"
+                                inputMode="numeric"
+                                value={formData.contactNumber}
+                                onChange={handleChange}
+                                className={`${inputBase} pl-14`}
+                                maxLength={10}
+                                required
+                            />
+                        </div>
+                        <p className="text-xs text-gray-500">
+                            Example: <span className="font-semibold">+91 8888888888</span>
+                        </p>
                     </div>
 
                     {/* Referral Code */}

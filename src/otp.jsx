@@ -1,8 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = "https://nirv-ico.onrender.com";
 const PENDING_SIGNUP_KEY = 'pendingSignup';
+const RESEND_OTP_ENDPOINT = `${API_BASE_URL}/api/auth/signup/resend-otp`;
 
 const OTP = () => {
     const navigate = useNavigate();
@@ -23,23 +25,58 @@ const OTP = () => {
 
     const [otp, setOtp] = useState('');
     const [loading, setLoading] = useState(false);
+    const [resending, setResending] = useState(false);
+
+    const resolvedMobileLabel = resolvedMobile ? `+91 ${resolvedMobile}` : 'your number';
 
     useEffect(() => {
         if (!resolvedUserId) {
-            alert("No signup data found.");
+            toast.error("No signup data found.");
             navigate('/');
         }
     }, [resolvedUserId, navigate]);
 
+    const handleResendOtp = async () => {
+        if (resending) return;
+        if (!resolvedUserId) {
+            toast.error("Unable to resend OTP without signup context.");
+            return;
+        }
+
+        setResending(true);
+        try {
+            const response = await fetch(RESEND_OTP_ENDPOINT, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: resolvedUserId,
+                    mobile: resolvedMobile,
+                }),
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to resend OTP');
+            }
+
+            toast.success(`OTP resent to ${resolvedMobileLabel}`);
+        } catch (error) {
+            console.error("Resend OTP error:", error);
+            toast.error(error.message || 'Unable to resend OTP.');
+        } finally {
+            setResending(false);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!otp) {
-            alert("Please enter the OTP");
+            toast.warning("Please enter the OTP");
             return;
         }
 
         if (!resolvedUserId) {
-            alert("Unable to verify without signup context.");
+            toast.error("Unable to verify without signup context.");
             navigate('/');
             return;
         }
@@ -61,7 +98,7 @@ const OTP = () => {
             console.log("OTP VERIFY RESPONSE:", data);
 
             if (response.ok) {
-                alert("Phone Verified Successfully!");
+                toast.success("Phone Verified Successfully!");
 
                 if (data.token) {
                     localStorage.setItem("authToken", data.token);
@@ -75,7 +112,7 @@ const OTP = () => {
 
         } catch (error) {
             console.error("Verification error:", error);
-            alert(error.message || "Something went wrong. Try again.");
+            toast.error(error.message || "Something went wrong. Try again.");
         } finally {
             setLoading(false);
         }
@@ -98,7 +135,7 @@ const OTP = () => {
                     <h2 className="text-2xl font-bold text-gray-900">Verification Code</h2>
                     <p className="text-gray-500 text-sm">
                         Enter the OTP sent to <br />
-                        <span className="font-semibold">{resolvedMobile ? `+91 ${resolvedMobile}` : 'your number'}</span>
+                        <span className="font-semibold">{resolvedMobileLabel}</span>
                     </p>
                 </div>
 
@@ -120,6 +157,17 @@ const OTP = () => {
                     >
                         {loading ? "Verifying..." : "Verify OTP"}
                     </button>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span>Didn't receive it?</span>
+                        <button
+                            type="button"
+                            onClick={handleResendOtp}
+                            disabled={!resolvedUserId || resending || loading}
+                            className="font-semibold text-primary disabled:text-gray-400"
+                        >
+                            {resending ? 'Resending...' : 'Resend OTP'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

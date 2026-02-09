@@ -1,9 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
+const APK_DOWNLOAD_LINK = 'https://nirvista.io/app-release.apk';
+const PORTAL_URL = 'https://portal.nirvista.io';
 
 const Complete = () => {
-    const navigate = useNavigate();
-
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4 space-y-6">
             <div className="bg-white border border-gray-200 rounded-2xl shadow-lg w-full max-w-md p-8 text-center space-y-4">
@@ -15,20 +15,26 @@ const Complete = () => {
                     You can now download the app and sign in to get started.
                 </p>
                 <p className="text-sm text-gray-500">
-                    Click the button below to download the app.
+                    Select an option below to continue.
                 </p>
-                <button
-                    className="px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium shadow hover:bg-emerald-500 transition"
-                    onClick={() => alert('Download action placeholder')}
-                >
-                    Download
-                </button>
-                <button
-                    className="text-sm text-gray-500 underline"
-                    onClick={() => navigate('/')}
-                >
-                    Back to signup
-                </button>
+                <div className="space-y-3">
+                    <a
+                        href={APK_DOWNLOAD_LINK}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium shadow hover:bg-emerald-500 transition"
+                    >
+                        Download APK
+                    </a>
+                    <a
+                        href={PORTAL_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block px-6 py-3 border border-gray-200 text-gray-700 rounded-lg font-medium hover:border-emerald-500 hover:text-emerald-600 transition"
+                    >
+                        Visit portal.nirvista.io
+                    </a>
+                </div>
             </div>
         </div>
     );

@@ -244,27 +244,23 @@ const KYC = () => {
                                 </div>
 
                                 <input
+                                    id={`doc-upload-${doc.key}`}
                                     type="file"
                                     accept="image/*,application/pdf"
                                     onChange={(event) => handleFileChange(doc.key, event.target.files?.[0])}
-                                    className="text-xs text-gray-500"
+                                    className="sr-only"
                                 />
-
-                                {state.file && (
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs text-gray-500">{state.file.name}</span>
-                                        {state.uploading && (
-                                            <span className="text-xs text-emerald-600 font-medium">Uploading</span>
-                                        )}
-                                        {!state.uploading && state.url && (
-                                            <span className="text-xs text-emerald-600 font-medium">Saved</span>
-                                        )}
-                                    </div>
-                                )}
-
-                                {state.message && (
-                                    <p className="text-xs text-gray-500">{state.message}</p>
-                                )}
+                                <label
+                                    htmlFor={`doc-upload-${doc.key}`}
+                                    className="w-full rounded-lg border border-dashed border-gray-300 py-3 text-sm font-semibold text-gray-600 text-center hover:border-emerald-500 transition cursor-pointer"
+                                >
+                                    {state.url ? 'Replace file' : 'Choose file'}
+                                </label>
+                                <p
+                                    className={`text-sm font-semibold ${state.uploading ? 'text-amber-600' : state.url ? 'text-emerald-600' : 'text-gray-500'}`}
+                                >
+                                    {state.message || (state.url ? 'Uploaded' : 'Awaiting upload')}
+                                </p>
                             </div>
                         );
                     })}
