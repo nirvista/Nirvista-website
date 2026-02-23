@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 const inputBase =
     'w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-200';
 
-const API_BASE_URL = 'https://nirv-ico.onrender.com';
+const API_BASE_URL = 'https://nirvista-backend-n8io.onrender.com';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -321,7 +321,7 @@ const Signup = () => {
             </div>
 
             <p className="mt-8 text-center text-xs text-gray-400">
-                ©2026 Nirvista. All rights reserved.
+                ï¿½2026 Nirvista. All rights reserved.
             </p>
         </div>
     );
