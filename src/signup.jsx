@@ -14,6 +14,8 @@ const Signup = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [signupMethod, setSignupMethod] = useState('mobile');
     const [isReferralLocked, setIsReferralLocked] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -248,30 +250,74 @@ const Signup = () => {
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700">Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Enter password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className={inputBase}
-                                    autoComplete="new-password"
-                                    required={signupMethod === 'email'}
-                                />
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? 'text' : 'password'}
+                                        name="password"
+                                        placeholder="Enter password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        className={`${inputBase} pr-12`}
+                                        autoComplete="new-password"
+                                        required={signupMethod === 'email'}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                    >
+                                        {showPassword ? (
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M1 1l22 22" />
+                                                <path d="M8.65 8.65a3 3 0 0 0 3.7 3.7" />
+                                                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88" />
+                                                <path d="M9.88 4.12A8.96 8.96 0 0 1 12 4c6.02 0 10 8 10 8a16.12 16.12 0 0 1-4.25 4.73m-3.5 1.84A10.1 10.1 0 0 1 12 20c-6.02 0-10-8-10-8a16.1 16.1 0 0 1 4.25-4.73" />
+                                            </svg>
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M1 12s3.5-7 11-7 11 7 11 7-3.5 7-11 7S1 12 1 12Z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg>
+                                        )}
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700">Confirm Password</label>
-                                <input
-                                    type="password"
-                                    name="confirmPassword"
-                                    placeholder="Confirm password"
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    className={inputBase}
-                                    autoComplete="new-password"
-                                    required={signupMethod === 'email'}
-                                />
+                                <div className="relative">
+                                    <input
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        name="confirmPassword"
+                                        placeholder="Confirm password"
+                                        value={formData.confirmPassword}
+                                        onChange={handleChange}
+                                        className={`${inputBase} pr-12`}
+                                        autoComplete="new-password"
+                                        required={signupMethod === 'email'}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword((prev) => !prev)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                        aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                                    >
+                                        {showConfirmPassword ? (
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M1 1l22 22" />
+                                                <path d="M8.65 8.65a3 3 0 0 0 3.7 3.7" />
+                                                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88" />
+                                                <path d="M9.88 4.12A8.96 8.96 0 0 1 12 4c6.02 0 10 8 10 8a16.12 16.12 0 0 1-4.25 4.73m-3.5 1.84A10.1 10.1 0 0 1 12 20c-6.02 0-10-8-10-8a16.1 16.1 0 0 1 4.25-4.73" />
+                                            </svg>
+                                        ) : (
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M1 12s3.5-7 11-7 11 7 11 7-3.5 7-11 7S1 12 1 12Z" />
+                                                <circle cx="12" cy="12" r="3" />
+                                            </svg>
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                         </>
                     )}
