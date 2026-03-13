@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const API_BASE_URL = "https://nirv-ico.onrender.com";
+const API_BASE_URL = "https://nirvista-backend-n8io.onrender.com";
 const PENDING_SIGNUP_KEY = 'pendingSignup';
 const RESEND_OTP_ENDPOINT = `${API_BASE_URL}/api/auth/signup/resend-otp`;
 
