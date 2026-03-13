@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = "https://nirv-ico.onrender.com";
+const API_BASE_URL = "https://nirvista-backend-n8io.onrender.com";
 const POLL_INTERVAL_MS = 5000;
 
 const REQUIRED_DOCS = [
